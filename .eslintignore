@@ -1,0 +1,6 @@
+dist/
+node_modules/
+test/
+docs/
+.vscode
+.eslintrc.js
