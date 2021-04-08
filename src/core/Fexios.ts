@@ -1,6 +1,7 @@
 import mergeConfig from '@/core/mergeConfig'
 
 import InterceptorManager from './InterceptorManager'
+import fetchUtil from './fetchUtil'
 import { FexiosRequestConfig, FexiosResponse } from 'typings'
 
 class Fexios {
@@ -21,18 +22,15 @@ class Fexios {
   request(config: FexiosRequestConfig): Promise<FexiosResponse> {
     config = mergeConfig(this.defaults, config)
 
-    this.interceptors.request.interceptors.forEach(interceptor => {
+    this.interceptors.request.task.forEach(interceptor => {
       console.log(interceptor)
     })
 
-    this.interceptors.response.interceptors.forEach(interceptor => {
+    this.interceptors.response.task.forEach(interceptor => {
       console.log(interceptor)
     })
 
-    /**
-     * to do:
-     * use fetch to request
-     */
+    return fetchUtil(config)
   }
  
   getUri(config: FexiosRequestConfig): string {
