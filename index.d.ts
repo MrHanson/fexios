@@ -45,12 +45,11 @@ export interface FexiosRequestConfig {
   transformRequest?: FexiosTransformer | FexiosTransformer[]
   transformResponse?: FexiosTransformer | FexiosTransformer[]
   headers?: any
-  params?: any
-  paramsSerializer?: (params: any) => string
+  params?: { [s: string]: string | number }
   data?: any
   timeout?: number
   timeoutErrorMessage?: string
-  withCredentials?: boolean
+  credentials: 'include' | 'same-origin' | 'omit'
   auth?: FexiosBasicCredentials
   responseType?: ResponseType
   xsrfCookieName?: string
