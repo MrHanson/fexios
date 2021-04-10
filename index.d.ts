@@ -50,18 +50,7 @@ export interface FexiosRequestConfig {
   timeout?: number
   timeoutErrorMessage?: string
   credentials: 'include' | 'same-origin' | 'omit'
-  auth?: FexiosBasicCredentials
-  responseType?: ResponseType
-  xsrfCookieName?: string
-  xsrfHeaderName?: string
-  onUploadProgress?: (progressEvent: any) => void
-  onDownloadProgress?: (progressEvent: any) => void
-  maxContentLength?: number
   validateStatus?: ((status: number) => boolean) | null
-  maxBodyLength?: number
-  maxRedirects?: number
-  cancelToken?: CancelToken
-  decompress?: boolean
 }
 
 export interface FexiosResponse<T = any>  {
@@ -83,34 +72,6 @@ export interface FexiosError<T = any> extends Error {
 }
 
 export type FexiosPromise<T = any> = Promise<FexiosResponse<T>>
-
-export interface CancelStatic {
-  new (message?: string): Cancel
-}
-
-export interface Cancel {
-  message: string
-}
-
-export interface Canceler {
-  (message?: string): void
-}
-
-export interface CancelTokenStatic {
-  new (executor: (cancel: Canceler) => void): CancelToken
-  source(): CancelTokenSource
-}
-
-export interface CancelToken {
-  promise: Promise<Cancel>
-  reason?: Cancel
-  throwIfRequested(): void
-}
-
-export interface CancelTokenSource {
-  token: CancelToken
-  cancel: Canceler
-}
 
 export interface FexiosInterceptorManager<V> {
   use(onFulfilled?: (value: V) => V | Promise<V>, onRejected?: (error: any) => any): number
@@ -138,8 +99,6 @@ export interface FexiosInstance {
 
 export interface FexiosStatic extends FexiosInstance {
   create(config?: FexiosRequestConfig): FexiosInstance
-  Cancel: CancelStatic
-  CancelToken: CancelTokenStatic
   isCancel(value: any): boolean
   all<T>(values: (T | Promise<T>)[]): Promise<T[]>
   spread<T, R>(callback: (...args: T[]) => R): (array: T[]) => R
