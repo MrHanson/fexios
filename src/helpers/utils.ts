@@ -1,3 +1,5 @@
+import { FexiosRequestConfig } from 'typings'
+
 /**
  * @description Determines whether the specified URL is absolute
  * @param {string} url
@@ -41,7 +43,11 @@ export function combineURLs(baseURL: string, relativeURL?: string): string {
  * @param {string} requestedURL
  * @param {object} params the params object need to be converted to query string
  */
-export function buildQsPath(requestedURL: string, params: { [s: string]: string | number }): string {
-  const qs = Object.entries(params).map(([k, v]) => `${k}=${v}`).join('&')
-  return requestedURL + '?' + qs
+export function buildQsPath(requestedURL: string, params?: { [s: string]: string | number }): string {
+  const qs = params && Object.entries(params).map(([k, v]) => `${k}=${v}`).join('&')
+  return qs ? requestedURL + '?' + qs : requestedURL
+}
+
+export function mergeConfig(conf1: FexiosRequestConfig = {}, conf2: FexiosRequestConfig = {}): FexiosRequestConfig {
+  return { ...conf1, ...conf2 }
 }

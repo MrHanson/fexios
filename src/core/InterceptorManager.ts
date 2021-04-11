@@ -1,16 +1,8 @@
-import { FexiosInterceptorManager } from 'typings'
-
-interface ResolvedFn<T = any> {
-  (val: T): T | Promise<T>
-}
-
-interface RejectedFn {
-  (error: any): any
-}
+import type { ResolvedFn, RejectedFn, FexiosInterceptorManager } from 'typings'
 
 interface Interceptor<T = any> {
-  onFulfilled: ResolvedFn<T>;
-  onRejected?: RejectedFn;
+  resolved: ResolvedFn<T>;
+  rejected?: RejectedFn;
 }
 
 export default class InterceptorManager<T = any> implements FexiosInterceptorManager<T> {
@@ -20,10 +12,10 @@ export default class InterceptorManager<T = any> implements FexiosInterceptorMan
     this.task = []
   }
 
-  use(onFulfilled: ResolvedFn<T>, onRejected: RejectedFn): number {
+  use(resolved: ResolvedFn<T>, rejected: RejectedFn): number {
     this.task.push({
-      onFulfilled,
-      onRejected
+      resolved,
+      rejected
     })
 
     return this.task.length - 1

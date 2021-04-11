@@ -49,32 +49,39 @@ export interface FexiosRequestConfig {
   data?: any
   timeout?: number
   timeoutErrorMessage?: string
-  credentials: 'include' | 'same-origin' | 'omit'
+  credentials?: 'include' | 'same-origin' | 'omit'
   validateStatus?: ((status: number) => boolean) | null
 }
 
-export interface FexiosResponse<T = any>  {
-  data: T
-  status: number
-  statusText: string
+export interface FexiosResponse  {
+  data: Response['body']
+  status: Response['status']
+  statusText: Response['statusText']
   headers: any
   config: FexiosRequestConfig
-  request?: any
 }
 
-export interface FexiosError<T = any> extends Error {
+export interface FexiosError extends Error {
   config: FexiosRequestConfig
   code?: string
   request?: any
-  response?: FexiosResponse<T>
+  response?: FexiosResponse
   isFexiosError: boolean
   toJSON: () => object
 }
 
-export type FexiosPromise<T = any> = Promise<FexiosResponse<T>>
+export type FexiosPromise = Promise<FexiosResponse>
 
-export interface FexiosInterceptorManager<V> {
-  use(onFulfilled?: (value: V) => V | Promise<V>, onRejected?: (error: any) => any): number
+export interface ResolvedFn<T = any> {
+  (val: T): T | Promise<T>
+}
+
+export interface RejectedFn {
+  (error: any): any
+}
+
+export interface FexiosInterceptorManager<T> {
+  use(resolved?: ResolvedFn<T>, rejected?: RejectedFn): number
   eject(id: number): void
 }
 
@@ -87,14 +94,14 @@ export interface FexiosInstance {
     response: FexiosInterceptorManager<FexiosResponse>
   }
   getUri(config?: FexiosRequestConfig): string
-  request<T = any, R = FexiosResponse<T>> (config: FexiosRequestConfig): Promise<R>
-  get<T = any, R = FexiosResponse<T>>(url: string, config?: FexiosRequestConfig): Promise<R>
-  delete<T = any, R = FexiosResponse<T>>(url: string, config?: FexiosRequestConfig): Promise<R>
-  head<T = any, R = FexiosResponse<T>>(url: string, config?: FexiosRequestConfig): Promise<R>
-  options<T = any, R = FexiosResponse<T>>(url: string, config?: FexiosRequestConfig): Promise<R>
-  post<T = any, R = FexiosResponse<T>>(url: string, data?: any, config?: FexiosRequestConfig): Promise<R>
-  put<T = any, R = FexiosResponse<T>>(url: string, data?: any, config?: FexiosRequestConfig): Promise<R>
-  patch<T = any, R = FexiosResponse<T>>(url: string, data?: any, config?: FexiosRequestConfig): Promise<R>
+  request<R = FexiosResponse> (config: FexiosRequestConfig): Promise<R>
+  get<R = FexiosResponse>(url: string, config?: FexiosRequestConfig): Promise<R>
+  delete<R = FexiosResponse>(url: string, config?: FexiosRequestConfig): Promise<R>
+  head<R = FexiosResponse>(url: string, config?: FexiosRequestConfig): Promise<R>
+  options<R = FexiosResponse>(url: string, config?: FexiosRequestConfig): Promise<R>
+  post<R = FexiosResponse>(url: string, data?: any, config?: FexiosRequestConfig): Promise<R>
+  put<R = FexiosResponse>(url: string, data?: any, config?: FexiosRequestConfig): Promise<R>
+  patch<R = FexiosResponse>(url: string, data?: any, config?: FexiosRequestConfig): Promise<R>
 }
 
 export interface FexiosStatic extends FexiosInstance {

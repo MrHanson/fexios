@@ -1,7 +1,7 @@
 import { buildFullPath, buildQsPath } from '@/helpers/utils'
 import { warn } from '@/helpers/debug'
 
-import { FexiosRequestConfig, FexiosResponse, ResponseType } from 'typings'
+import type { FexiosRequestConfig, FexiosResponse } from 'typings'
 
 if (!window.fetch) {
   warn('Your browser doesn\'t fetch, maybe u need the polyfill(https://github.com/github/fetch)')
@@ -11,11 +11,16 @@ if (!window.AbortController) {
   warn('Your browser doesn\'t AbortController')
 }
 
-export function getAbort(abortPath: string): { signal: AbortController['signal'], abort: AbortController['abort'] } {
+interface AbortConfig {
+  signal: AbortController['signal']
+  abort: AbortController['abort']
+}
+
+export function getAbort(abortPath?: string): AbortConfig {
   // use AbortController to cancel fetch request
   const controller = new AbortController()
   const signal = controller.signal
-  signal.addEventListener('abort', () => warn(`request ${abortPath} has been canceled`))
+  signal.addEventListener('abort', () => warn(`request ${abortPath || ''} has been canceled`))
 
   return {
     signal,
@@ -23,7 +28,7 @@ export function getAbort(abortPath: string): { signal: AbortController['signal']
   }
 }
 
-export function fetchRequest (config: FexiosRequestConfig): Promise<FexiosResponse> {
+export function fetchRequest (config: FexiosRequestConfig, abortConfig?: AbortConfig): Promise<FexiosResponse> {
   const {
     url,
     method = 'post',
@@ -47,7 +52,7 @@ export function fetchRequest (config: FexiosRequestConfig): Promise<FexiosRespon
       finalPath = buildQsPath(finalPath, params)
     }
 
-    const { signal, abort: abortRequest } = getAbort(finalPath)
+    const { signal, abort: abortRequest } = abortConfig || getAbort(finalPath)
 
     const initConfig = {
       method,
