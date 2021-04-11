@@ -48,6 +48,58 @@ export function buildQsPath(requestedURL: string, params?: { [s: string]: string
   return qs ? requestedURL + '?' + qs : requestedURL
 }
 
-export function mergeConfig(conf1: FexiosRequestConfig = {}, conf2: FexiosRequestConfig = {}): FexiosRequestConfig {
-  return { ...conf1, ...conf2 }
+export function isObject(val: any): boolean {
+  return toString.call(val) === '[object Object]'
+}
+
+export function deepMerge(...objs: any[]): any {
+  const result = Object.create(null)
+  function assignValue(val: any, key: string) {
+    if (isObject(result[key]) && isObject(val)) {
+      result[key] = deepMerge(result[key], val)
+    } else if (isObject(val)) {
+      result[key] = deepMerge({}, val)
+    } else {
+      result[key] = val
+    }
+  }
+
+  for (let i = 0; i < objs.length; i++) {
+    const obj = objs[i]
+    for (const key in obj) {
+      assignValue(obj[key], key)
+    }
+  }
+
+  return result
+}
+
+export function mergeConfig(
+  defaultConfig: FexiosRequestConfig = {},
+  userConfig: FexiosRequestConfig = {}
+): FexiosRequestConfig {
+  const config = Object.create(null) // 创建空对象，作为最终的合并结果
+
+  const defaultToUserConfig: Array<keyof FexiosRequestConfig> = [
+    'baseURL',
+    'transformRequest',
+    'transformResponse',
+    'timeout',
+    'credentials',
+    'validateStatus',
+  ]
+  defaultToUserConfig.forEach(prop => {
+    if (typeof userConfig[prop] !== 'undefined') {
+      config[prop] = userConfig[prop]
+    } else if (typeof defaultConfig[prop] !== 'undefined') {
+      config[prop] = defaultConfig[prop]
+    }
+  })
+
+  const valueFromUserConfig: Array<keyof FexiosRequestConfig> = ['url', 'method', 'headers', 'params', 'data']
+  valueFromUserConfig.forEach(prop => {
+    if (typeof userConfig[prop] !== 'undefined') config[prop] = userConfig[prop]
+  })
+
+  return config
 }

@@ -31,9 +31,9 @@ export function getAbort(abortPath?: string): AbortConfig {
 export function fetchRequest (config: FexiosRequestConfig, abortConfig?: AbortConfig): Promise<FexiosResponse> {
   const {
     url,
-    method = 'post',
+    method = 'get',
     baseURL,
-    headers: requestHeaders,
+    headers: requestHeaders = {},
     params,
     data,
     timeout = 5000,
@@ -61,7 +61,13 @@ export function fetchRequest (config: FexiosRequestConfig, abortConfig?: AbortCo
       credentials,
       signal
     }
-    if (!['get', 'headers'].includes(method.toLocaleLowerCase())) initConfig.body = data
+
+    const lowerCaseMethod = method.toLocaleLowerCase()
+    if (['post', 'put', 'patch'].includes(lowerCaseMethod)) {
+      initConfig.body = data
+      if (!requestHeaders['Content-Type']) initConfig.headers['Content-Type'] = 'application/x-www-form-urlencoded'
+    }
+
 
     let timeoutId: any
     const fetchTask = window.fetch(finalPath, initConfig)
@@ -89,7 +95,13 @@ export function fetchRequest (config: FexiosRequestConfig, abortConfig?: AbortCo
           headers: responseHeaders,
           config
         }
-        resolve(response)
+
+        const validateStatus = config.validateStatus
+        if (!status || !validateStatus || validateStatus(status)) {
+          resolve(response)
+        } else {
+          reject(new Error('Request failded with status code ' + response.status))
+        }
       })
       .catch(err => {
         reject(err)

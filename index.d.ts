@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/ban-types */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 export interface FexiosTransformer {
-  (data: any, headers?: any): any
+  (data: any): any
 }
 
 export interface FexiosBasicCredentials {
@@ -44,7 +44,7 @@ export interface FexiosRequestConfig {
   baseURL?: string
   transformRequest?: FexiosTransformer | FexiosTransformer[]
   transformResponse?: FexiosTransformer | FexiosTransformer[]
-  headers?: any
+  headers?: { [s: string]: string }
   params?: { [s: string]: string | number }
   data?: any
   timeout?: number
@@ -106,10 +106,7 @@ export interface FexiosInstance {
 
 export interface FexiosStatic extends FexiosInstance {
   create(config?: FexiosRequestConfig): FexiosInstance
-  isCancel(value: any): boolean
   all<T>(values: (T | Promise<T>)[]): Promise<T[]>
-  spread<T, R>(callback: (...args: T[]) => R): (array: T[]) => R
-  isFexiosError(payload: any): payload is FexiosError
 }
 
 declare const fexios: FexiosStatic
