@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+  </head>
+  <body>
+    An alert should be shown with the <code>{"name":"fexios"}</code>
+
+    <script src="../../dist/fexios.js"></script>
+    <script>
+      axios.get("./fixture.json").then(
+        function (response) {
+          console.log(response);
+          alert(JSON.stringify(response.data));
+          alert("response headers:\n\n" + JSON.stringify(response.headers));
+        },
+        function (err) {
+          console.log(err);
+        }
+      );
+    </script>
+  </body>
+</html>

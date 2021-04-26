@@ -4,7 +4,7 @@
   "description": "fetch based HTTP client for the browser",
   "main": "dist/fexios.js",
   "scripts": {
-    "build": "rollup src/index.ts",
+    "build": "rimraf -rf dist && rollup -c",
     "jest": "jest tests"
   },
   "devDependencies": {

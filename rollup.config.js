@@ -1,13 +1,12 @@
-import typescript from '@rollup/plugin-typescript';
-
-import pkg from './package.json'
+import typescript from '@rollup/plugin-typescript'
 
 const libraryName = 'fexios'
 
 export default {
-  input: `src/${libraryName}.ts`,
+  input: 'src/index.ts',
   output: [
-    { file: pkg.main, name: libraryName, format: 'umd', sourcemap: true }
+    { file: `dist/${libraryName}.umd.js`, name: libraryName, format: 'umd' },
+    { file: `dist/${libraryName}.js`, name: libraryName, format: 'es' }
   ],
   // Indicate here external modules you don't wanna include in your bundle (i.e.: 'lodash')
   external: [],
