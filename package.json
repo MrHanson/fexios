@@ -5,6 +5,7 @@
   "main": "dist/fexios.js",
   "scripts": {
     "build": "rimraf -rf dist && rollup -c",
+    "examples": "node exmaples/server.js",
     "jest": "jest tests"
   },
   "devDependencies": {
