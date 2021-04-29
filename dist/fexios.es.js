@@ -1,4 +1,8 @@
 /**
+ * @preserve
+ * @mrhanson/fexios v0.0.0-development
+ */
+/**
  * @description Determines whether the specified URL is absolute
  * @param {string} url
  * @returns {boolean}
@@ -281,7 +285,7 @@ var defaults = {
 };
 
 /**
- * Create an instance of Axios
+ * Create an instance of Fexios
  *
  * @param {Object} defaultConfig The default config for the instance
  * @return {Fexios} A new instance of Fexios

@@ -1,7 +1,11 @@
+/**
+ * @preserve
+ * @mrhanson/fexios v0.0.0-development
+ */
 (function (global, factory) {
     typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
     typeof define === 'function' && define.amd ? define(factory) :
-    (global = typeof globalThis !== 'undefined' ? globalThis : global || self, global.fexios = factory());
+    (global = typeof globalThis !== 'undefined' ? globalThis : global || self, (global.fexios = global.fexios || {}, global.fexios.umd = factory()));
 }(this, (function () { 'use strict';
 
     /**
@@ -287,7 +291,7 @@
     };
 
     /**
-     * Create an instance of Axios
+     * Create an instance of Fexios
      *
      * @param {Object} defaultConfig The default config for the instance
      * @return {Fexios} A new instance of Fexios

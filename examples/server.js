@@ -3,6 +3,16 @@ const path = require('path')
 const http = require('http')
 let server
 
+function pipeFileToResponse(res, file, type) {
+  if (type) {
+    res.writeHead(200, {
+      'Content-Type': type
+    })
+  }
+
+  fs.createReadStream(path.join(__dirname, file)).pipe(res)
+}
+
 server = http.createServer((req, res) => {
   const url = req.url
 

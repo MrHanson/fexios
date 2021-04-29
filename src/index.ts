@@ -4,7 +4,7 @@ import { mergeConfig } from './helpers/utils'
 
 import type { FexiosRequestConfig, FexiosStatic } from 'typings'
 /**
- * Create an instance of Axios
+ * Create an instance of Fexios
  *
  * @param {Object} defaultConfig The default config for the instance
  * @return {Fexios} A new instance of Fexios
