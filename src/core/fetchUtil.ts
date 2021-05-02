@@ -68,7 +68,6 @@ export function fetchRequest (config: FexiosRequestConfig, abortConfig?: AbortCo
       if (!requestHeaders['Content-Type']) initConfig.headers['Content-Type'] = 'application/x-www-form-urlencoded'
     }
 
-
     let timeoutId: any
     const fetchTask = window.fetch(finalPath, initConfig)
     const timeoutTask = new Promise((_, rj) => {

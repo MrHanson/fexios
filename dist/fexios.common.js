@@ -77,6 +77,7 @@ function mergeConfig(defaultConfig, userConfig) {
         if (typeof userConfig[prop] !== 'undefined')
             config[prop] = userConfig[prop];
     });
+    console.log(config)
     return config;
 }
 

@@ -2,10 +2,10 @@
   "name": "fexios",
   "version": "0.0.0-development",
   "description": "fetch based HTTP client for the browser",
-  "main": "dist/fexios.js",
+  "main": "dist/fexios.es.js",
   "scripts": {
     "build": "rimraf -rf dist && rollup -c",
-    "examples": "node exmaples/server.js",
+    "examples": "node examples/server.js --open",
     "jest": "jest tests"
   },
   "devDependencies": {
